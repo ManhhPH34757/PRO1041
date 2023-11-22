@@ -15,6 +15,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.JButton;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
@@ -196,6 +199,14 @@ public class ShopLaptop365 extends JFrame {
 		toolBar.add(btnPhieuGiamGia);
 		
 		JButton btnDotGiamGia = new JButton("Đợt giảm giá");
+		  btnDotGiamGia.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				new DotGiamGiaView().setVisible(true);
+			}
+		  });
 		btnDotGiamGia.setIcon(new ImageIcon(ShopLaptop365.class.getResource("/com/shoplaptop/icon/sale-icon.png")));
 		btnDotGiamGia.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnDotGiamGia.setHorizontalTextPosition(SwingConstants.CENTER);

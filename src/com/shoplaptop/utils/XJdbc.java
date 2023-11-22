@@ -12,7 +12,7 @@ public class XJdbc {
 	private final String DBName = "PM_Ban_Laptop";
 	private final String PortNumber = "1433";
 	private final String User = "sa";
-	private final String Pass = "nguyenmanh2707";
+	private final String Pass = "123456";
 	
 	String url = "jdbc:sqlserver://"+ServerName+":"+PortNumber+";databaseName="+DBName+";user="+User+";password="+Pass+";encrypt=false";
 	
