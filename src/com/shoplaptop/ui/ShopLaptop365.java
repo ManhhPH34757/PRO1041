@@ -19,6 +19,8 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
 public class ShopLaptop365 extends JFrame {
@@ -189,6 +191,11 @@ public class ShopLaptop365 extends JFrame {
 		toolBar.add(btnLaptop);
 		
 		JButton btnPhieuGiamGia = new JButton("Phiếu giảm giá");
+		btnPhieuGiamGia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		btnPhieuGiamGia.setIcon(new ImageIcon(ShopLaptop365.class.getResource("/com/shoplaptop/icon/Statistics.png")));
 		btnPhieuGiamGia.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnPhieuGiamGia.setHorizontalTextPosition(SwingConstants.CENTER);

@@ -16,28 +16,43 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 /**
  *
  * @author Admin
  */
+@SuppressWarnings("serial")
 public class FormPhieuGiamGia extends javax.swing.JDialog {
 DefaultTableModel tblModel = new DefaultTableModel();
 List<PhieuGiamGia> list = new ArrayList<>();
 PhieuGiamGia pgg = new PhieuGiamGia();
 PhieuGiamGiaDAO pggd = new PhieuGiamGiaDAO();
+private JLabel to;
+private JLabel from;
+private double size = -1;
+private int index = 1;
+private int Rowcount = -1;
     /**
      * Creates new form FormPhieuGiamGia
      */
     public FormPhieuGiamGia(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        getContentPane().setBackground(new Color(192, 192, 192));
         initComponents();
         cboLoc.setSelectedIndex(-1);
         setLocationRelativeTo(this);
-        setIconImage(new XImage().getAppIcon());
+        setIconImage(XImage.getAppIcon());
         initTable();
-        fillTable(pggd.getALLDAO());
-       
+        fillTable((ArrayList<PhieuGiamGia>) pggd.selectAllPhieu(index) );
+        setPage(pggd.getALLDAO());
         
        
     }
@@ -387,90 +402,128 @@ PhieuGiamGiaDAO pggd = new PhieuGiamGiaDAO();
                 btnQuayLaiActionPerformed(evt);
             }
         });
+        
+        JButton btnPrev = new JButton("Prev");
+        btnPrev.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		if (index > 1) {
+					--index;
+					to.setText(index+"");
+					fillTable((ArrayList<PhieuGiamGia>) pggd.selectAllPhieu((index - 1)*5 + 1));
+				}
+        	}
+        });
+        
+        JButton btnNext = new JButton("Next");
+        btnNext.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		if (index < Rowcount) {
+					++index;
+					to.setText(index+"");
+					fillTable((ArrayList<PhieuGiamGia>) pggd.selectAllPhieu((index - 1)*5 + 1));
+				}
+        	}
+        });
+        
+        to = new JLabel("1");
+        to.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        JLabel lblNewLabel_1 = new JLabel("/");
+        lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        from = new JLabel("1");
+        from.setHorizontalAlignment(SwingConstants.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTimKiem)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnTimKiem)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cboLoc, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnSua, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(btnMoi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnXoa, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(15, 15, 15))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(btnThem)
-                                .addGap(15, 15, 15))))))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(280, 280, 280)
-                        .addComponent(btnQuayLai))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(450, 450, 450)
-                        .addComponent(jLabel9)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(24)
+        					.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        						.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        						.addGroup(layout.createSequentialGroup()
+        							.addComponent(jLabel1)
+        							.addPreferredGap(ComponentPlacement.RELATED)
+        							.addComponent(txtTimKiem, GroupLayout.PREFERRED_SIZE, 447, GroupLayout.PREFERRED_SIZE)
+        							.addGap(35)
+        							.addComponent(btnTimKiem)))
+        					.addGap(18)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        						.addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        						.addGroup(layout.createSequentialGroup()
+        							.addGap(133)
+        							.addComponent(jLabel10, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
+        							.addPreferredGap(ComponentPlacement.UNRELATED)
+        							.addComponent(cboLoc, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(btnExit, GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+        						.addComponent(btnThem, GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+        						.addComponent(btnSua, GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+        						.addComponent(btnXoa, GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+        						.addComponent(btnMoi, GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(450)
+        					.addComponent(jLabel9)))
+        			.addContainerGap())
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(193)
+        			.addComponent(btnPrev)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(to, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addComponent(from, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(btnNext)
+        			.addPreferredGap(ComponentPlacement.RELATED, 361, Short.MAX_VALUE)
+        			.addComponent(btnQuayLai)
+        			.addGap(267))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel9)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel10)
-                        .addComponent(cboLoc, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(49, 49, 49)
-                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55)
-                        .addComponent(btnMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47)
-                        .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnQuayLai, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        	layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(29)
+        			.addComponent(jLabel9)
+        			.addGap(18)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(4)
+        					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        						.addComponent(txtTimKiem, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(jLabel1)
+        						.addComponent(btnTimKiem, GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)))
+        				.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        					.addComponent(jLabel10)
+        					.addComponent(cboLoc, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)))
+        			.addGap(18)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(btnThem, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+        					.addGap(53)
+        					.addComponent(btnSua, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+        					.addPreferredGap(ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+        					.addComponent(btnXoa, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+        					.addGap(53)
+        					.addComponent(btnMoi, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+        					.addGap(49)
+        					.addComponent(btnExit, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE))
+        			.addGap(18)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(from)
+        				.addComponent(lblNewLabel_1)
+        				.addComponent(to)
+        				.addComponent(btnPrev)
+        				.addComponent(btnNext)
+        				.addComponent(btnQuayLai, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE))
+        			.addGap(16))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -535,11 +588,14 @@ PhieuGiamGiaDAO pggd = new PhieuGiamGiaDAO();
         ArrayList<PhieuGiamGia> list = new ArrayList<>();
         if(cboLoc.getSelectedItem()== "Phiếu còn hạn"){
             list = pggd.getALLDAOLOCCONHAN();
-            fillTable(list);
+            setPage(list);
+            fillTable((ArrayList<PhieuGiamGia>)pggd.selectPhieuConHan(index));
+            
         } else {
             if(cboLoc.getSelectedItem()=="Phiếu hết hạn"){
                 list = pggd.getALLDAOLOCHETHAN();
-                fillTable(list);
+                setPage(list);
+                fillTable((ArrayList<PhieuGiamGia>)pggd.selectPhieuHetHan(index));
             }
         }
     }//GEN-LAST:event_cboLocActionPerformed
@@ -570,6 +626,18 @@ PhieuGiamGiaDAO pggd = new PhieuGiamGiaDAO();
             MsgBox.alert(this, "Tìm thấy kết quả");
         }
     }//GEN-LAST:event_btnTimKiemActionPerformed
+    
+    public void setPage(List<PhieuGiamGia> list) {
+		to.setText("1");
+		size = (double) list.size() / 5;
+		if (size == 0) {
+			Rowcount = 1;
+		} else {
+			Rowcount = (int) Math.ceil(size);
+		}
+		from.setText(Rowcount + "");
+	}
+
 
     /**
      * @param args the command line arguments
@@ -643,5 +711,4 @@ PhieuGiamGiaDAO pggd = new PhieuGiamGiaDAO();
     private javax.swing.JTextField txtSoLuong;
     private javax.swing.JTextField txtTenPhieu;
     private javax.swing.JTextField txtTimKiem;
-    // End of variables declaration//GEN-END:variables
 }

@@ -9,12 +9,13 @@ import com.shoplaptop.entity.PhieuGiamGia;
 import com.shoplaptop.utils.XDate;
 import com.shoplaptop.utils.XJdbc;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Admin
  */
-public class PhieuGiamGiaDAO {
+public class PhieuGiamGiaDAO implements ShopLaptop365DAO<PhieuGiamGia, String> {
     PhieuGiamGia pgg;
     Connection con = null;
     PreparedStatement ps = null;
@@ -46,7 +47,7 @@ public class PhieuGiamGiaDAO {
             ps = con.prepareStatement(sql);
             ps.setString(1, pgg.getMaPG());
             ps.setString(2, pgg.getTenPhieu());
-            ps.setString(3, new XDate().toString(pgg.getHan(), "yyyy-MM-dd"));
+            ps.setString(3, XDate.toString(pgg.getHan(), "yyyy-MM-dd"));
             ps.setInt(4, pgg.getSoLuong());
             ps.setDouble(5, pgg.getGiaGiam());
             ps.setDouble(6, pgg.getDieuKienGiam());
@@ -75,29 +76,55 @@ public class PhieuGiamGiaDAO {
                 + "	DieuKienHoaDon = ? \n"
                 + "	where MaPG = ?";
         try {
-            con = new XJdbc().Connect();
-            ps = con.prepareStatement(sql);
-            ps.setString(1, pgg.getTenPhieu());
-            ps.setString(2, new XDate().toString(pgg.getHan(), "yyyy-MM-dd"));
-            ps.setInt(3, pgg.getSoLuong());
-            ps.setDouble(4, pgg.getGiaGiam());
-            ps.setDouble(5, pgg.getDieuKienGiam());
-            ps.setString(6, pgg.getMaPG());
-            ps.executeUpdate();
-            con.close();
+//            con = new XJdbc().Connect();
+//            ps = con.prepareStatement(sql);
+//            ps.setString(1, pgg.getTenPhieu());
+//            ps.setString(2, new XDate().toString(pgg.getHan(), "yyyy-MM-dd"));
+//            ps.setInt(3, pgg.getSoLuong());
+//            ps.setDouble(4, pgg.getGiaGiam());
+//            ps.setDouble(5, pgg.getDieuKienGiam());
+//            ps.setString(6, pgg.getMaPG());
+//            ps.executeUpdate();
+//            con.close();
+        	XJdbc.update(sql, pgg.getTenPhieu(),pgg.getHan(),pgg.getSoLuong(),pgg.getGiaGiam(),pgg.getDieuKienGiam(),pgg.getMaPG());
         } catch (Exception e) {
             System.out.println(e);
         }
     }
+    public List<PhieuGiamGia> selectAllPhieu(int count) {
+    	String selectPhieu = "SELECT * FROM\r\n"
+    			+ "   (SELECT ROW_NUMBER() OVER (ORDER BY MaPG DESC) AS rownum, * from PhieuGiamGia)\r\n"
+    			+ "	AS temp\r\n"
+    			+ "    WHERE rownum BETWEEN ? AND ?";
+		return selectBySQL(selectPhieu,count,count+4);
+	}
     
     public ArrayList<PhieuGiamGia> getALLDAOLOC(){
         String sql="select * from PhieuGiamGia";
         return getALLSQL(sql);
     }
+    
+    public List<PhieuGiamGia> selectPhieuConHan(int count) {
+    	String selectPhieu = "SELECT * FROM\r\n"
+    			+ "   (SELECT ROW_NUMBER() OVER (ORDER BY MaPG DESC) AS rownum, * from PhieuGiamGia where Han>(SELECT CAST(SYSDATETIME() AS DATE) AS CurrentDate))\r\n"
+    			+ "	AS temp\r\n"
+    			+ "    WHERE rownum BETWEEN ? AND ?";
+		return selectBySQL(selectPhieu,count,count+4);
+	}
+    
     public ArrayList<PhieuGiamGia> getALLDAOLOCCONHAN(){
         String sql="select * from PhieuGiamGia where Han>(SELECT CAST(SYSDATETIME() AS DATE) AS CurrentDate)";
         return getALLSQL(sql);
     }
+    
+    public List<PhieuGiamGia> selectPhieuHetHan(int count) {
+    	String selectPhieu = "SELECT * FROM\r\n"
+    			+ "   (SELECT ROW_NUMBER() OVER (ORDER BY MaPG DESC) AS rownum, * from PhieuGiamGia where Han<(SELECT CAST(SYSDATETIME() AS DATE) AS CurrentDate))\r\n"
+    			+ "	AS temp\r\n"
+    			+ "    WHERE rownum BETWEEN ? AND ?";
+		return selectBySQL(selectPhieu,count,count+4);
+	}
+    
     public ArrayList<PhieuGiamGia> getALLDAOLOCHETHAN(){
         String sql="select * from PhieuGiamGia where Han<(SELECT CAST(SYSDATETIME() AS DATE) AS CurrentDate)";
         return getALLSQL(sql);
@@ -125,4 +152,46 @@ public class PhieuGiamGiaDAO {
         PhieuGiamGiaDAO pggdao = new PhieuGiamGiaDAO();
         pggdao.getALLDAO();
     }
+	@Override
+	public String insert(PhieuGiamGia entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String update(PhieuGiamGia entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String delete(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public PhieuGiamGia selectById(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<PhieuGiamGia> selectAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<PhieuGiamGia> selectBySQL(String sql, Object... args) {
+		
+	List<PhieuGiamGia> list = new ArrayList<PhieuGiamGia>();
+			try {
+				ResultSet rs = XJdbc.query(sql, args);
+				while (rs.next()) {
+					PhieuGiamGia phieuGiamGia = new PhieuGiamGia(rs.getInt("ID"), rs.getString("MaPG"), rs.getString("TenPhieu"), rs.getDate("Han"), rs.getInt("SoLuong"), rs.getDouble("GiaGiam"), rs.getDouble("DieuKienHoaDon"));
+					list.add(phieuGiamGia);
+				}
+				rs.getStatement().getConnection().close();
+				return list;
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+	
+	}
 }
