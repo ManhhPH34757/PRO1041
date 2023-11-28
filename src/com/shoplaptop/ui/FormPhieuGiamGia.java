@@ -22,6 +22,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
@@ -72,17 +73,18 @@ private int Rowcount = -1;
                 pgg.getID(),
                 pgg.getMaPG(),
                 pgg.getTenPhieu(),
-                pgg.getHan(),
+                XDate.toString(pgg.getHan(), "yyyy-MM-dd HH:mm:ss"),
                 pgg.getSoLuong(),
                 decimalFormat(pgg.getGiaGiam()),
                 decimalFormat(pgg.getDieuKienGiam())
             };
             tblModel.addRow(row);
+            System.out.println(pgg);
         }
     }
     
-    public static String decimalFormat(double number) {        
-        DecimalFormat decimalFormat = new DecimalFormat("0.#");
+    public static String decimalFormat(BigDecimal number) {        
+        DecimalFormat decimalFormat = new DecimalFormat("0.####################");
         String formattedNumber = decimalFormat.format(number);
         return formattedNumber;
 	}
@@ -99,22 +101,22 @@ private int Rowcount = -1;
         PhieuGiamGia pgg = new PhieuGiamGia();
         pgg.setMaPG(txtMaPhieu.getText());
         pgg.setTenPhieu(txtTenPhieu.getText());
-        pgg.setHan(XDate.toDate(txtHan.getText(), "yyyy-MM-dd"));
+        pgg.setHan(XDate.toDate(txtHan.getText(), "yyyy-MM-dd HH:mm:ss"));
         pgg.setSoLuong(Integer.parseInt(txtSoLuong.getText()));
-        pgg.setGiaGiam(Double.parseDouble(txtGiaGiam.getText()));
-        pgg.setDieuKienGiam(Double.parseDouble(txtDieuKien.getText()));
+        pgg.setGiaGiam(BigDecimal.valueOf(Double.parseDouble(txtGiaGiam.getText())));
+        pgg.setDieuKienGiam(BigDecimal.valueOf(Double.parseDouble(txtDieuKien.getText())));
         return pgg;
     }
-     public PhieuGiamGia readForm(){
-        String MaPG = txtMaPhieu.getText();
-        String Ten  = txtTenPhieu.getText();
-        Date Han = XDate.toDate(txtHan.getText(), "yyyy-MM-dd");
-        int SoLuong = Integer.parseInt(txtSoLuong.getText());
-        float GiaGiam = Float.parseFloat(txtGiaGiam.getText());
-        float Dieukien = Float.parseFloat(txtDieuKien.getText());
-        PhieuGiamGia pgg = new PhieuGiamGia(WIDTH, MaPG, Ten, Han, SoLuong, GiaGiam, Dieukien);
-        return pgg;
-    }
+//     public PhieuGiamGia readForm(){
+//        String MaPG = txtMaPhieu.getText();
+//        String Ten  = txtTenPhieu.getText();
+//        Date Han = XDate.toDate(txtHan.getText(), "yyyy-MM-dd HH:mm:ss");
+//        int SoLuong = Integer.parseInt(txtSoLuong.getText());
+//        BigDecimal GiaGiam = BigDecimal;
+//        float Dieukien = Float.parseFloat(txtDieuKien.getText());
+//        PhieuGiamGia pgg = new PhieuGiamGia(WIDTH, MaPG, Ten, Han, SoLuong, GiaGiam, Dieukien);
+//        return pgg;
+//    }
      public PhieuGiamGia findByMaPG(String MaPG){
         list = pggd.getALLDAO();
         for(PhieuGiamGia pgg : list){
@@ -551,7 +553,7 @@ private int Rowcount = -1;
         // TODO add your handling code here:
         if(MsgBox.confirm(this, "Xác nhận cập nhật ?")){
             
-                pggd.UPDATEDAO(readForm());
+                pggd.UPDATEDAO(getModel());
                 fillTable(pggd.getALLDAO());
                 MsgBox.alert(this, "Cập nhật thành công");
             

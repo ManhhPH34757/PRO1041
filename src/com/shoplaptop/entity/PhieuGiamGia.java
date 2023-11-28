@@ -4,6 +4,7 @@
  */
 package com.shoplaptop.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -16,13 +17,13 @@ public class PhieuGiamGia {
     private String TenPhieu;
     private Date Han;
     private int SoLuong;
-    private double GiaGiam;
-    private double DieuKienGiam;
+    private BigDecimal GiaGiam;
+    private BigDecimal DieuKienGiam;
 
     public PhieuGiamGia() {
     }
 
-    public PhieuGiamGia(int ID, String MaPG, String TenPhieu, Date Han, int SoLuong, double GiaGiam, double DieuKienGiam) {
+    public PhieuGiamGia(int ID, String MaPG, String TenPhieu, Date Han, int SoLuong, BigDecimal GiaGiam, BigDecimal DieuKienGiam) {
         this.ID = ID;
         this.MaPG = MaPG;
         this.TenPhieu = TenPhieu;
@@ -72,19 +73,19 @@ public class PhieuGiamGia {
         this.SoLuong = SoLuong;
     }
 
-    public double getGiaGiam() {
+    public BigDecimal getGiaGiam() {
         return GiaGiam;
     }
 
-    public void setGiaGiam(double GiaGiam) {
+    public void setGiaGiam(BigDecimal GiaGiam) {
         this.GiaGiam = GiaGiam;
     }
 
-    public double getDieuKienGiam() {
+    public BigDecimal getDieuKienGiam() {
         return DieuKienGiam;
     }
 
-    public void setDieuKienGiam(double DieuKienGiam) {
+    public void setDieuKienGiam(BigDecimal DieuKienGiam) {
         this.DieuKienGiam = DieuKienGiam;
     }
 

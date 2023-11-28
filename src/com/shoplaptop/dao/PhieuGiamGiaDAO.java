@@ -29,12 +29,12 @@ public class PhieuGiamGiaDAO implements ShopLaptop365DAO<PhieuGiamGia, String> {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
-              dspg.add(new PhieuGiamGia(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getInt(5), rs.getDouble(6), rs.getDouble(7)));
+              dspg.add(new PhieuGiamGia(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getInt(5), rs.getBigDecimal(6), rs.getBigDecimal(7)));
             }
-            System.out.println(dspg.get(0).toString());
-            System.out.println(dspg.get(1).toString());
-            System.out.println(dspg.get(2).toString());
-            System.out.println(dspg.get(3).toString());
+//            System.out.println(dspg.get(0).toString());
+//            System.out.println(dspg.get(1).toString());
+//            System.out.println(dspg.get(2).toString());
+//            System.out.println(dspg.get(3).toString());
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -47,10 +47,10 @@ public class PhieuGiamGiaDAO implements ShopLaptop365DAO<PhieuGiamGia, String> {
             ps = con.prepareStatement(sql);
             ps.setString(1, pgg.getMaPG());
             ps.setString(2, pgg.getTenPhieu());
-            ps.setString(3, XDate.toString(pgg.getHan(), "yyyy-MM-dd"));
+            ps.setString(3, XDate.toString(pgg.getHan(), "yyyy-MM-dd HH:mm:ss"));
             ps.setInt(4, pgg.getSoLuong());
-            ps.setDouble(5, pgg.getGiaGiam());
-            ps.setDouble(6, pgg.getDieuKienGiam());
+            ps.setBigDecimal(5, pgg.getGiaGiam());
+            ps.setBigDecimal(6, pgg.getDieuKienGiam());
             ps.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -136,7 +136,7 @@ public class PhieuGiamGiaDAO implements ShopLaptop365DAO<PhieuGiamGia, String> {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while(rs.next()){
-                dspg.add(new PhieuGiamGia(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getInt(5), rs.getDouble(6), rs.getDouble(7)));
+                dspg.add(new PhieuGiamGia(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getInt(5), rs.getBigDecimal(6), rs.getBigDecimal(7)));
             }
 //            System.out.println(dspg.get(0).toString());
 //            System.out.println(dspg.get(1).toString());
@@ -184,7 +184,7 @@ public class PhieuGiamGiaDAO implements ShopLaptop365DAO<PhieuGiamGia, String> {
 			try {
 				ResultSet rs = XJdbc.query(sql, args);
 				while (rs.next()) {
-					PhieuGiamGia phieuGiamGia = new PhieuGiamGia(rs.getInt("ID"), rs.getString("MaPG"), rs.getString("TenPhieu"), rs.getDate("Han"), rs.getInt("SoLuong"), rs.getDouble("GiaGiam"), rs.getDouble("DieuKienHoaDon"));
+					PhieuGiamGia phieuGiamGia = new PhieuGiamGia(rs.getInt("ID"), rs.getString("MaPG"), rs.getString("TenPhieu"), XDate.toDate(rs.getString("Han"), "yyyy-MM-dd HH:mm:ss"), rs.getInt("SoLuong"), rs.getBigDecimal("GiaGiam"), rs.getBigDecimal("DieuKienHoaDon"));
 					list.add(phieuGiamGia);
 				}
 				rs.getStatement().getConnection().close();
