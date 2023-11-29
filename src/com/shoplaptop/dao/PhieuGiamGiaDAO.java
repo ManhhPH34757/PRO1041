@@ -31,10 +31,6 @@ public class PhieuGiamGiaDAO implements ShopLaptop365DAO<PhieuGiamGia, String> {
             while(rs.next()){
               dspg.add(new PhieuGiamGia(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getInt(5), rs.getBigDecimal(6), rs.getBigDecimal(7)));
             }
-//            System.out.println(dspg.get(0).toString());
-//            System.out.println(dspg.get(1).toString());
-//            System.out.println(dspg.get(2).toString());
-//            System.out.println(dspg.get(3).toString());
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -76,16 +72,7 @@ public class PhieuGiamGiaDAO implements ShopLaptop365DAO<PhieuGiamGia, String> {
                 + "	DieuKienHoaDon = ? \n"
                 + "	where MaPG = ?";
         try {
-//            con = new XJdbc().Connect();
-//            ps = con.prepareStatement(sql);
-//            ps.setString(1, pgg.getTenPhieu());
-//            ps.setString(2, new XDate().toString(pgg.getHan(), "yyyy-MM-dd"));
-//            ps.setInt(3, pgg.getSoLuong());
-//            ps.setDouble(4, pgg.getGiaGiam());
-//            ps.setDouble(5, pgg.getDieuKienGiam());
-//            ps.setString(6, pgg.getMaPG());
-//            ps.executeUpdate();
-//            con.close();
+
         	XJdbc.update(sql, pgg.getTenPhieu(),pgg.getHan(),pgg.getSoLuong(),pgg.getGiaGiam(),pgg.getDieuKienGiam(),pgg.getMaPG());
         } catch (Exception e) {
             System.out.println(e);
@@ -138,10 +125,7 @@ public class PhieuGiamGiaDAO implements ShopLaptop365DAO<PhieuGiamGia, String> {
             while(rs.next()){
                 dspg.add(new PhieuGiamGia(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getInt(5), rs.getBigDecimal(6), rs.getBigDecimal(7)));
             }
-//            System.out.println(dspg.get(0).toString());
-//            System.out.println(dspg.get(1).toString());
-//            System.out.println(dspg.get(2).toString());
-//            System.out.println(dspg.get(3).toString());
+
         } catch (Exception e) {
             System.out.println(e);
         }
